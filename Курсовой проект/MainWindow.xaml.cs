@@ -18,7 +18,7 @@ namespace Курсовой_проект
     {
         public MainWindow()
         {
-            Console.WriteLine("not meowwwewewe");
+            Console.WriteLine("meowwwewewe");
             InitializeComponent();
         }
     }
