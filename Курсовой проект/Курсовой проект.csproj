@@ -9,4 +9,17 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="изображения и спрайты\героиня меню.png" />
+    <None Remove="изображения и спрайты\фон.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="изображения и спрайты\фон.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="изображения и спрайты\героиня меню.png" />
+  </ItemGroup>
+
 </Project>
