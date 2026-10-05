@@ -12,6 +12,7 @@
   <ItemGroup>
     <None Remove="изображения и спрайты\героиня меню.png" />
     <None Remove="изображения и спрайты\фон.jpg" />
+    <None Remove="изображения и спрайты\чиби героиня.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,7 @@
 
   <ItemGroup>
     <Resource Include="изображения и спрайты\героиня меню.png" />
+    <Resource Include="изображения и спрайты\чиби героиня.png" />
   </ItemGroup>
 
 </Project>

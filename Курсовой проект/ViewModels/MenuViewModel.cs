@@ -19,7 +19,17 @@ namespace Курсовой_проект.ViewModels
         }
         private void ExecuteExit(object parameter)
         {
-            Application.Current.Shutdown();
+            ExitWindow dialog = new ExitWindow();
+
+            if (Application.Current.MainWindow != null)
+            {
+                dialog.Owner = Application.Current.MainWindow;
+            }
+
+            if (dialog.ShowDialog() == true)
+            {
+                Application.Current.Shutdown();
+            }
         }
     }
 }
