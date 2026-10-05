@@ -4,10 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Курсовой_проект"
+        xmlns:viewmodels="clr-namespace:Курсовой_проект.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280">
-    <Grid>
-        <local:MenuControl />
+        Title="MainWindow" 
+        MinHeight="720" MinWidth="1280"
+        MaxHeight="1080" MaxWidth="1920">
 
+    <Grid>
+        <local:MenuControl/>
     </Grid>
+
 </Window>

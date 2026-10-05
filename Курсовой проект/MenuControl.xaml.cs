@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Курсовой_проект.ViewModels;
 
 namespace Курсовой_проект
 {
@@ -23,6 +24,7 @@ namespace Курсовой_проект
         public MenuControl()
         {
             InitializeComponent();
+            this.DataContext = new MenuViewModel();
         }
     }
 }

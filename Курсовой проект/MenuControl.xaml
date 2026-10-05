@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Курсовой_проект"
              mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="1280">
+             d:DesignHeight="720" d:DesignWidth="1280"
+             MinHeight="720" MinWidth="1280"
+             MaxHeight="1080" MaxWidth="1920">
     <UserControl.Resources>
         <Style x:Key="NeonMenuButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF69B4"/>
@@ -89,25 +91,26 @@
             <ColumnDefinition Width="3.5*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,40,0,0" Panel.ZIndex="2">
-            <TextBlock Text="Sweet" FontSize="65" FontFamily="Gabriola" Foreground="#FFFFB6C1">
+        <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,90,0,0" Panel.ZIndex="2">
+            <TextBlock Text="Sweet" FontSize="70" FontFamily="Gabriola" Foreground="#FFFF8DA9">
                 <TextBlock.Effect>
-                    <DropShadowEffect Color="#FFFF1493" BlurRadius="25" ShadowDepth="0" Opacity="1"/>
+                    <DropShadowEffect Color="#FFC71585" BlurRadius="8" ShadowDepth="0" Opacity="1"/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock Text="Candies" FontSize="65" FontFamily="Gabriola" Foreground="#FFFFB6C1" Margin="25,-15,0,0">
+            <TextBlock Text="Candies" FontSize="60" FontFamily="Gabriola" Foreground="#FFFF8DA9" Margin="20,-25,0,0">
                 <TextBlock.Effect>
-                    <DropShadowEffect Color="#FFFF1493" BlurRadius="25" ShadowDepth="0" Opacity="1"/>
+                    <DropShadowEffect Color="#FFC71585" BlurRadius="8" ShadowDepth="0" Opacity="1"/>
                 </TextBlock.Effect>
             </TextBlock>
         </StackPanel>
-        
-        <StackPanel Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="60,0,0,40" Panel.ZIndex="2">
+
+
+        <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,250,0,40" Panel.ZIndex="2">
             <Button Content="Начать" Style="{StaticResource NeonMenuButtonStyle}"/>
             <Button Content="Загрузить" Style="{StaticResource NeonMenuButtonStyle}"/>
             <Button Content="Настройки" Style="{StaticResource NeonMenuButtonStyle}"/>
             <Button Content="Галерея" Style="{StaticResource NeonMenuButtonStyle}"/>
-            <Button Content="Выход" Style="{StaticResource NeonMenuButtonStyle}"/>
+            <Button Content="Выход" Style="{StaticResource NeonMenuButtonStyle}" Command="{Binding ExitCommand}" />
         </StackPanel>
 
         <Image Grid.Column="0" Grid.ColumnSpan="3"
