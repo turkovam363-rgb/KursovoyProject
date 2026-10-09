@@ -12,7 +12,7 @@ namespace Курсовой_проект.ViewModels
     public class MenuViewModel
     {
         public ICommand ExitCommand { get; }
-
+//dkjhvjkdhvjkh
         public MenuViewModel()
         {
             ExitCommand = new RelayCommand(ExecuteExit);
