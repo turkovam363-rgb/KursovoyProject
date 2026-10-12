@@ -6,12 +6,13 @@
         xmlns:local="clr-namespace:Курсовой_проект"
         xmlns:viewmodels="clr-namespace:Курсовой_проект.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" 
+        Title="Sweet Candies"
         MinHeight="720" MinWidth="1280"
-        MaxHeight="1080" MaxWidth="1920">
+        MaxHeight="1080" MaxWidth="1920"
+        Icon="pack://application:,,,/изображения и спрайты/иконка.ico">
 
     <Grid>
         <local:MenuControl/>
     </Grid>
-
 </Window>
+

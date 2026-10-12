@@ -10,12 +10,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="изображения и спрайты\бантик.png" />
     <None Remove="изображения и спрайты\героиня меню.png" />
+    <None Remove="изображения и спрайты\иконка.ico" />
     <None Remove="изображения и спрайты\фон.jpg" />
     <None Remove="изображения и спрайты\чиби героиня.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="аудио\bg_music.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="изображения и спрайты\бантик.png" />
+    <Resource Include="изображения и спрайты\иконка.ico" />
     <Resource Include="изображения и спрайты\фон.jpg" />
   </ItemGroup>
 

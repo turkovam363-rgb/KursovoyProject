@@ -108,7 +108,7 @@
         <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="60,250,0,40" Panel.ZIndex="2">
             <Button Content="Начать" Style="{StaticResource NeonMenuButtonStyle}"/>
             <Button Content="Загрузить" Style="{StaticResource NeonMenuButtonStyle}"/>
-            <Button Content="Настройки" Style="{StaticResource NeonMenuButtonStyle}"/>
+            <Button Content="Настройки" Style="{StaticResource NeonMenuButtonStyle}" Command="{Binding SettingsCommand}"/>
             <Button Content="Галерея" Style="{StaticResource NeonMenuButtonStyle}"/>
             <Button Content="Выход" Style="{StaticResource NeonMenuButtonStyle}" Command="{Binding ExitCommand}" />
         </StackPanel>
