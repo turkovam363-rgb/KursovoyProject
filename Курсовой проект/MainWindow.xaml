@@ -11,8 +11,18 @@
         MaxHeight="1080" MaxWidth="1920"
         Icon="pack://application:,,,/изображения и спрайты/иконка.ico">
 
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:MenuViewModel}">
+            <local:MenuControl/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:NovelViewModel}">
+            <local:NovelControl/>
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid>
-        <local:MenuControl/>
+        <ContentControl Content="{Binding CurrentView}" />
     </Grid>
 </Window>
 

@@ -10,22 +10,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="аудио\barradeen-the-girl-i-havent-met.mp3" />
     <None Remove="изображения и спрайты\бантик.png" />
     <None Remove="изображения и спрайты\героиня меню.png" />
     <None Remove="изображения и спрайты\иконка.ico" />
+    <None Remove="изображения и спрайты\сцена1фон1.jpeg" />
+    <None Remove="изображения и спрайты\сцена1фон2.jpeg" />
     <None Remove="изображения и спрайты\фон.jpg" />
     <None Remove="изображения и спрайты\чиби героиня.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="аудио\bg_music.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="аудио\barradeen-the-girl-i-havent-met.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="изображения и спрайты\бантик.png" />
     <Resource Include="изображения и спрайты\иконка.ico" />
+    <Resource Include="изображения и спрайты\сцена1фон1.jpeg" />
+    <Resource Include="изображения и спрайты\сцена1фон2.jpeg" />
     <Resource Include="изображения и спрайты\фон.jpg" />
   </ItemGroup>
 

@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace Курсовой_проект
 {
-    /// <summary>
-    /// Логика взаимодействия для ExitWindow.xaml
-    /// </summary>
     public partial class ExitWindow : Window
     {
         public ExitWindow()

@@ -16,15 +16,11 @@ using Курсовой_проект.ViewModels;
 
 namespace Курсовой_проект
 {
-    /// <summary>
-    /// Логика взаимодействия для MenuControl.xaml
-    /// </summary>
     public partial class MenuControl : UserControl
     {
         public MenuControl()
         {
             InitializeComponent();
-            this.DataContext = new MenuViewModel();
         }
     }
 }

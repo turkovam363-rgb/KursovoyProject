@@ -14,13 +14,11 @@ namespace Курсовой_проект.Commands
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             string fullPath = Path.Combine(basePath, "аудио", fileName);
 
-            if (File.Exists(fullPath))
-            {
-                _bgmPlayer.Open(new Uri(fullPath, UriKind.Absolute));
-                _bgmPlayer.MediaEnded += (s, e) => { _bgmPlayer.Position = TimeSpan.Zero; _bgmPlayer.Play(); };
-                _bgmPlayer.Volume = CurrentVolume;
-                _bgmPlayer.Play();
-            }
+            _bgmPlayer.Close();
+            _bgmPlayer.Open(new Uri(fullPath, UriKind.Absolute));
+            _bgmPlayer.MediaEnded += (s, e) => { _bgmPlayer.Position = TimeSpan.Zero; _bgmPlayer.Play(); };
+            _bgmPlayer.Volume = CurrentVolume;
+            _bgmPlayer.Play();
         }
 
         public static void SetVolume(double volume)
@@ -32,6 +30,8 @@ namespace Курсовой_проект.Commands
         public static void StopBackgroundMusic()
         {
             _bgmPlayer.Stop();
+            _bgmPlayer.Close();
         }
     }
 }
+

@@ -9,16 +9,27 @@ using Курсовой_проект.Commands;
 
 namespace Курсовой_проект.ViewModels
 {
-    public class MenuViewModel
+    public class MenuViewModel : ViewModelBase 
     {
+        private readonly MainViewModel _mainViewModel;
+
         public ICommand SettingsCommand { get; }
         public ICommand ExitCommand { get; }
+        public ICommand StartGameCommand { get; } 
 
-        public MenuViewModel()
+        public MenuViewModel(MainViewModel mainViewModel)
         {
+            _mainViewModel = mainViewModel;
             SettingsCommand = new RelayCommand(ExecuteSettings);
             ExitCommand = new RelayCommand(ExecuteExit);
+            StartGameCommand = new RelayCommand(ExecuteStartGame); /
+
             AudioService.PlayBackgroundMusic("bg_music.mp3");
+        }
+
+        private void ExecuteStartGame(object parameter)
+        {
+            _mainViewModel.CurrentView = new NovelViewModel(_mainViewModel);
         }
 
         private void ExecuteSettings(object parameter)
@@ -46,4 +57,5 @@ namespace Курсовой_проект.ViewModels
             }
         }
     }
+
 }
