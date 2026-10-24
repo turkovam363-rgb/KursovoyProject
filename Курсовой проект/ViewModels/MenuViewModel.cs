@@ -22,7 +22,7 @@ namespace Курсовой_проект.ViewModels
             _mainViewModel = mainViewModel;
             SettingsCommand = new RelayCommand(ExecuteSettings);
             ExitCommand = new RelayCommand(ExecuteExit);
-            StartGameCommand = new RelayCommand(ExecuteStartGame); /
+            StartGameCommand = new RelayCommand(ExecuteStartGame); 
 
             AudioService.PlayBackgroundMusic("bg_music.mp3");
         }

@@ -23,10 +23,10 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Grid x:Name="RootGrid" Background="Transparent">
-                            <Border x:Name="ButtonBorder" 
-                                    Background="{TemplateBinding Background}" 
-                                    BorderBrush="#FFFFB6C1" 
-                                    BorderThickness="2" 
+                            <Border x:Name="ButtonBorder"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="#FFFFB6C1"
+                                    BorderThickness="2"
                                     CornerRadius="15">
                                 <Border.Effect>
                                     <DropShadowEffect Color="#FFFFB6C1" BlurRadius="8" ShadowDepth="0" Opacity="0.6"/>
@@ -34,7 +34,6 @@
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                         </Grid>
-
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="ButtonBorder" Property="Background" Value="#FFFFB6C1"/>
@@ -61,7 +60,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Настройки" FontSize="32" FontFamily="Georgia" Foreground="#FF1493" 
+            <TextBlock Text="Настройки" FontSize="32" FontFamily="Georgia" Foreground="#FF1493"
                        HorizontalAlignment="Center" Margin="0,0,0,15"/>
 
             <Grid Grid.Row="1" VerticalAlignment="Center">
@@ -113,7 +112,7 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Громкость музыки:" FontSize="16" FontFamily="Georgia" Foreground="#FF69B4" VerticalAlignment="Center"/>
-                        <Slider Grid.Column="1" Minimum="0" Maximum="1" ValueChanged="VolumeSlider_ValueChanged" x:Name="VolumeSlider" VerticalAlignment="Center"/>
+                        <Slider Grid.Column="1" Minimum="0" Maximum="1" Value="{Binding Volume, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                     </Grid>
 
                     <Grid Margin="0,0,0,10">
@@ -127,12 +126,15 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="10,0,0,0">
-                    <CheckBox Content="Полноэкранный режим" FontSize="16" FontFamily="Georgia" Foreground="#FF69B4" 
-                              x:Name="FullscreenCheck" Click="FullscreenCheck_Click" VerticalAlignment="Center"/>
+                    <CheckBox Content="Полноэкранный режим" FontSize="16" FontFamily="Georgia" Foreground="#FF69B4"
+                              IsChecked="{Binding IsFullscreen, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>
 
-            <Button Grid.Row="2" Content="Назад" Click="CloseButton_Click" Style="{StaticResource PinkWindowButtonStyle}" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+            <Button Grid.Row="2" Content="Назад"
+                    Command="{Binding CloseCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                    Style="{StaticResource PinkWindowButtonStyle}" HorizontalAlignment="Center" Margin="0,10,0,0"/>
         </Grid>
     </Border>
 </Window>

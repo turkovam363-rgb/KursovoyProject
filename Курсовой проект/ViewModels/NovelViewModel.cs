@@ -10,11 +10,12 @@ namespace Курсовой_проект.ViewModels
 {
     public class DialogueStep
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string CharacterName { get; set; }
         public string Text { get; set; }
         public string BackgroundPath { get; set; }
-        public string MusicPath { get; set; } 
+        public string MusicPath { get; set; }
+        public string SpritePath { get; set; }
     }
 
     public class NovelViewModel : ViewModelBase
@@ -22,7 +23,7 @@ namespace Курсовой_проект.ViewModels
         private readonly MainViewModel _mainViewModel;
         private List<DialogueStep> _storyContent;
         private int _currentStepIndex = 0;
-        private string _lastPlayedMusic = ""; 
+        private string _lastPlayedMusic = "";
 
         private string _characterName;
         public string CharacterName
@@ -45,6 +46,13 @@ namespace Курсовой_проект.ViewModels
             set { _currentBackground = value; OnPropertyChanged(); }
         }
 
+        private string _currentSprite;
+        public string CurrentSprite
+        {
+            get => _currentSprite;
+            set { _currentSprite = value; OnPropertyChanged(); }
+        }
+
         public ICommand NextDialogueCommand { get; }
 
         public NovelViewModel(MainViewModel mainViewModel)
@@ -60,41 +68,8 @@ namespace Курсовой_проект.ViewModels
 
         private void InitStory()
         {
-            _storyContent = new List<DialogueStep>
-            {
-                new DialogueStep
-                {
-                    Id = 1,
-                    CharacterName = "кеикикккккккк",
-                    Text = "т6мно",
-                    BackgroundPath = "pack://application:,,,/изображения и спрайты/сцена1фон1.jpeg",
-                    MusicPath = "barradeen-the-girl-i-havent-met.mp3" 
-                },
-                new DialogueStep
-                {
-                    Id = 2,
-                    CharacterName = "про себя",
-                    Text = "Я моргнула несколько раз, пытаясь сфокусировать взгляд на единственном источнике света.",
-                    BackgroundPath = "pack://application:,,,/изображения и спрайты/сцена1фон1.jpeg",
-                    MusicPath = "barradeen-the-girl-i-havent-met.mp3"
-                },
-                new DialogueStep
-                {
-                    Id = 3,
-                    CharacterName = "Телевизор",
-                    Text = "Картинка наконец стала четкой. На экране старого пузатого телевизора вовсю крутили музыкальный клип.",
-                    BackgroundPath = "pack://application:,,,/изображения и спрайты/сцена1фон2.jpeg",
-                    MusicPath = "barradeen-the-girl-i-havent-met.mp3" 
-                },
-                new DialogueStep
-                {
-                    Id = 4,
-                    CharacterName = "минна чан",
-                    Text = "— охае мои глупве фанаты эту песню посвещаю вам.",
-                    BackgroundPath = "pack://application:,,,/изображения и спрайты/сцена1фон2.jpeg",
-                    MusicPath = "barradeen-the-girl-i-havent-met.mp3"
-                }
-            };
+            Services.IDialogueRepository repository = new Services.SqliteDialogueRepository();
+            _storyContent = repository.GetStoryContent();
         }
 
         private void ShowCurrentStep()
@@ -105,12 +80,13 @@ namespace Курсовой_проект.ViewModels
                 CharacterName = step.CharacterName;
                 DialogueText = step.Text;
                 CurrentBackground = step.BackgroundPath;
+                CurrentSprite = step.SpritePath;
 
                 if (!string.IsNullOrEmpty(step.MusicPath) && step.MusicPath != _lastPlayedMusic)
                 {
                     AudioService.StopBackgroundMusic();
                     AudioService.PlayBackgroundMusic(step.MusicPath);
-                    _lastPlayedMusic = step.MusicPath; 
+                    _lastPlayedMusic = step.MusicPath;
                 }
             }
             else
