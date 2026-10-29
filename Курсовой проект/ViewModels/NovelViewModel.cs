@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows;
 using Курсовой_проект.Commands;
 
 namespace Курсовой_проект.ViewModels
@@ -24,6 +25,7 @@ namespace Курсовой_проект.ViewModels
         private List<DialogueStep> _storyContent;
         private int _currentStepIndex = 0;
         private string _lastPlayedMusic = "";
+        private readonly Services.SaveService _saveService = new Services.SaveService();
 
         private string _characterName;
         public string CharacterName
@@ -54,15 +56,39 @@ namespace Курсовой_проект.ViewModels
         }
 
         public ICommand NextDialogueCommand { get; }
+        public ICommand SaveCommand { get; }
+        public ICommand OpenLoadMenuCommand { get; }
+        public ICommand OpenSettingsCommand { get; }
+        public ICommand ReturnToMenuCommand { get; } 
 
         public NovelViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
             NextDialogueCommand = new RelayCommand(ExecuteNextDialogue);
+            SaveCommand = new RelayCommand(ExecuteSave);
+            OpenLoadMenuCommand = new RelayCommand(ExecuteOpenLoadMenu);
+            OpenSettingsCommand = new RelayCommand(ExecuteOpenSettings);
+            ReturnToMenuCommand = new RelayCommand(ExecuteReturnToMenu);
 
             AudioService.StopBackgroundMusic();
 
             InitStory();
+            ShowCurrentStep();
+        }
+
+        public NovelViewModel(MainViewModel mainViewModel, int startStepIndex)
+        {
+            _mainViewModel = mainViewModel;
+            NextDialogueCommand = new RelayCommand(ExecuteNextDialogue);
+            SaveCommand = new RelayCommand(ExecuteSave);
+            OpenLoadMenuCommand = new RelayCommand(ExecuteOpenLoadMenu);
+            OpenSettingsCommand = new RelayCommand(ExecuteOpenSettings);
+            ReturnToMenuCommand = new RelayCommand(ExecuteReturnToMenu);
+
+            AudioService.StopBackgroundMusic();
+
+            InitStory();
+            _currentStepIndex = startStepIndex;
             ShowCurrentStep();
         }
 
@@ -74,7 +100,7 @@ namespace Курсовой_проект.ViewModels
 
         private void ShowCurrentStep()
         {
-            if (_currentStepIndex < _storyContent.Count)
+            if (_storyContent != null && _currentStepIndex < _storyContent.Count)
             {
                 var step = _storyContent[_currentStepIndex];
                 CharacterName = step.CharacterName;
@@ -99,6 +125,36 @@ namespace Курсовой_проект.ViewModels
         {
             _currentStepIndex++;
             ShowCurrentStep();
+        }
+
+        private void ExecuteSave(object parameter)
+        {
+            _mainViewModel.CurrentView = new LoadMenuViewModel(_mainViewModel, this, _currentStepIndex);
+        }
+
+        private void ExecuteOpenLoadMenu(object parameter)
+        {
+            _mainViewModel.CurrentView = new LoadMenuViewModel(_mainViewModel, this);
+        }
+
+        private void ExecuteOpenSettings(object parameter)
+        {
+            _mainViewModel.CurrentView = new SettingsViewModel(_mainViewModel, this);
+        }
+
+        private void ExecuteReturnToMenu(object parameter)
+        {
+            var dialog = new ConfirmDialogWindow("Вы действительно хотите выйти в главное меню?\nНесохраненный прогресс будет потерян.");
+
+            if (Application.Current.MainWindow != null)
+            {
+                dialog.Owner = Application.Current.MainWindow;
+            }
+
+            if (dialog.ShowDialog() == true)
+            {
+                _mainViewModel.CurrentView = new MenuViewModel(_mainViewModel);
+            }
         }
     }
 }

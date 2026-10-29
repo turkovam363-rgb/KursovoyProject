@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Курсовой_проект.Commands;
@@ -11,6 +7,9 @@ namespace Курсовой_проект.ViewModels
 {
     public class SettingsViewModel : ViewModelBase
     {
+        private readonly MainViewModel _mainViewModel;
+        private readonly ViewModelBase _previousView;
+
         private double _volume = AudioService.CurrentVolume;
         public double Volume
         {
@@ -21,7 +20,7 @@ namespace Курсовой_проект.ViewModels
                 {
                     _volume = value;
                     OnPropertyChanged();
-                    AudioService.SetVolume(value); 
+                    AudioService.SetVolume(value);
                 }
             }
         }
@@ -43,8 +42,10 @@ namespace Курсовой_проект.ViewModels
 
         public ICommand CloseCommand { get; }
 
-        public SettingsViewModel()
+        public SettingsViewModel(MainViewModel mainViewModel, ViewModelBase previousView = null)
         {
+            _mainViewModel = mainViewModel;
+            _previousView = previousView ?? new MenuViewModel(_mainViewModel);
             CloseCommand = new RelayCommand(CloseWindow);
         }
 
@@ -69,10 +70,7 @@ namespace Курсовой_проект.ViewModels
 
         private void CloseWindow(object parameter)
         {
-            if (parameter is Window window)
-            {
-                window.Close();
-            }
+            _mainViewModel.CurrentView = _previousView;
         }
     }
 }

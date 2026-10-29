@@ -4,20 +4,27 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Курсовой_проект"
-        xmlns:viewmodels="clr-namespace:Курсовой_проект.ViewModels"
+        xmlns:vm="clr-namespace:Курсовой_проект.ViewModels"
         mc:Ignorable="d"
-        Title="Sweet Candies"
+        Title="Sweet Candies" Height="720" Width="1280"
         MinHeight="720" MinWidth="1280"
-        MaxHeight="1080" MaxWidth="1920"
-        Icon="pack://application:,,,/изображения и спрайты/иконка.ico">
+        MaxHeight="1080" MaxWidth="1920">
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type viewmodels:MenuViewModel}">
-            <local:MenuControl/>
+        <DataTemplate DataType="{x:Type vm:MenuViewModel}">
+            <local:MenuControl />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodels:NovelViewModel}">
-            <local:NovelControl/>
+        <DataTemplate DataType="{x:Type vm:NovelViewModel}">
+            <local:NovelControl />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:LoadMenuViewModel}">
+            <local:LoadControl />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+            <local:SettingsControl />
         </DataTemplate>
     </Window.Resources>
 
@@ -25,4 +32,3 @@
         <ContentControl Content="{Binding CurrentView}" />
     </Grid>
 </Window>
-
