@@ -11,12 +11,15 @@
 
   <ItemGroup>
     <None Remove="аудио\barradeen-the-girl-i-havent-met.mp3" />
+    <None Remove="аудио\клик.wav" />
     <None Remove="изображения и спрайты\бантик.png" />
     <None Remove="изображения и спрайты\героиня меню.png" />
     <None Remove="изображения и спрайты\иконка.ico" />
     <None Remove="изображения и спрайты\мама_спрайт.png" />
     <None Remove="изображения и спрайты\сцена1фон1.jpeg" />
     <None Remove="изображения и спрайты\сцена1фон2.jpeg" />
+    <None Remove="изображения и спрайты\фон настроек.jpg" />
+    <None Remove="изображения и спрайты\фон сохранения и загрузки.jpg" />
     <None Remove="изображения и спрайты\фон.jpg" />
     <None Remove="изображения и спрайты\чиби героиня.png" />
   </ItemGroup>
@@ -31,12 +34,21 @@
     <Content Include="аудио\barradeen-the-girl-i-havent-met.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="аудио\клик.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.13" />
     <Resource Include="изображения и спрайты\бантик.png" />
     <Resource Include="изображения и спрайты\иконка.ico" />
     <Resource Include="изображения и спрайты\мама_спрайт.png" />
     <Resource Include="изображения и спрайты\сцена1фон1.jpeg" />
     <Resource Include="изображения и спрайты\сцена1фон2.jpeg" />
+    <Resource Include="изображения и спрайты\фон настроек.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="изображения и спрайты\фон сохранения и загрузки.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="изображения и спрайты\фон.jpg" />
   </ItemGroup>
 

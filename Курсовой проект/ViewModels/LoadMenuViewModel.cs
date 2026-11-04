@@ -49,7 +49,10 @@ namespace Курсовой_проект.ViewModels
                 if (_isSaveMode)
                 {
                     _saveService.SaveGame(slotId, _currentStepIndex);
-                    System.Windows.MessageBox.Show($"Игра успешно сохранена в слот {slotId}!", "Сохранение", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+
+                    var msg = new CustomMessageBox("Сохранение", $"Игра успешно сохранена в слот {slotId}!");
+                    msg.ShowDialog();
+
                     _mainViewModel.CurrentView = _previousView;
                 }
                 else
@@ -61,7 +64,8 @@ namespace Курсовой_проект.ViewModels
                     }
                     else
                     {
-                        System.Windows.MessageBox.Show("Этот слот пуст!", "Загрузка", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+                        var msg = new CustomMessageBox("Загрузка", "Этот слот пуст!");
+                        msg.ShowDialog();
                     }
                 }
             }

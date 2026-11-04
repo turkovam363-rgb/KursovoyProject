@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Media;
 
-namespace Курсовой_проект.Commands
+namespace Курсовой_проект.Services
 {
     public static class AudioService
     {

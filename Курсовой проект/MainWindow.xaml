@@ -7,24 +7,22 @@
         xmlns:vm="clr-namespace:Курсовой_проект.ViewModels"
         mc:Ignorable="d"
         Title="Sweet Candies" Height="720" Width="1280"
-        MinHeight="720" MinWidth="1280"
-        MaxHeight="1080" MaxWidth="1920">
-
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:DisclaimerViewModel}">
+            <local:DisclaimerControl />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type vm:MenuViewModel}">
             <local:MenuControl />
         </DataTemplate>
-
         <DataTemplate DataType="{x:Type vm:NovelViewModel}">
             <local:NovelControl />
         </DataTemplate>
-
-        <DataTemplate DataType="{x:Type vm:LoadMenuViewModel}">
-            <local:LoadControl />
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
             <local:SettingsControl />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LoadMenuViewModel}">
+            <local:LoadControl />
         </DataTemplate>
     </Window.Resources>
 

@@ -7,42 +7,104 @@
              MinHeight="720" MinWidth="1280"
              MaxHeight="1080" MaxWidth="1920"
              d:DesignHeight="720" d:DesignWidth="1280">
-    <Grid>
-        <Grid Background="Black"/>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="450">
-            <TextBlock Text="Настройки" FontSize="28" FontWeight="Bold" Foreground="#FFB6C1" HorizontalAlignment="Center" Margin="0,0,0,40">
+    <UserControl.Resources>
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF69B4"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="25" 
+                                BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF1493"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#C71585"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <UserControl.Background>
+        <ImageBrush ImageSource="/изображения и спрайты/фон настроек.jpg" Stretch="UniformToFill"/>
+    </UserControl.Background>
+    <Border Padding="40" Background="#88D87093" CornerRadius="10" Margin="50">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="НАСТРОЙКИ" Foreground="White" FontSize="36" FontWeight="Bold" 
+                       HorizontalAlignment="Center" Margin="0,0,0,20">
                 <TextBlock.Effect>
-                    <DropShadowEffect BlurRadius="5" Color="White" ShadowDepth="1"/>
+                    <DropShadowEffect ShadowDepth="2" Direction="330" Color="Black" Opacity="0.5" BlurRadius="4"/>
                 </TextBlock.Effect>
             </TextBlock>
 
-            <TextBlock Text="Громкость музыки" Foreground="#FFB6C1" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
-            <Slider Value="{Binding Volume, Mode=TwoWay}" Minimum="0" Maximum="1" TickFrequency="0.01" Margin="0,0,0,30"/>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="0,0,20,0">
+                    <TextBlock Text="АУДИО" Foreground="#444444" FontSize="24" FontWeight="Bold" Margin="0,10,0,10"/>
 
-            <CheckBox Content="Полноэкранный режим" IsChecked="{Binding IsFullscreen, Mode=TwoWay}" Foreground="#FFB6C1" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,40"/>
+                    <TextBlock Text="Общая громкость" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
+                    <Slider Minimum="0" Maximum="1" TickFrequency="0.1" IsSnapToTickEnabled="True"
+                            Value="{Binding Volume, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
 
-            <Button Content="Назад" Command="{Binding CloseCommand}" Width="150" Height="40" Foreground="#D81B60" FontWeight="Bold" FontSize="16" Cursor="Hand">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background" Value="#FFF0F5"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="#FFB6C1" BorderThickness="2">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FFE4E1"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-        </StackPanel>
-    </Grid>
+                    <TextBlock Text="Громкость эффектов" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
+                    <Slider Minimum="0" Maximum="1" TickFrequency="0.1" IsSnapToTickEnabled="True"
+                            Value="{Binding EffectsVolume, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
+
+                    <TextBlock Text="Громкость интерфейса" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
+                    <Slider Minimum="0" Maximum="1" TickFrequency="0.1" IsSnapToTickEnabled="True"
+                            Value="{Binding UiVolume, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
+
+                    <CheckBox Content="Отключить фоновую музыку" IsChecked="{Binding IsMusicMuted}" 
+                              Foreground="Black" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,20"/>
+
+                    <TextBlock Text="ТЕКСТ И ЧТЕНИЕ" Foreground="#444444" FontSize="24" FontWeight="Bold" Margin="0,20,0,10"/>
+
+                    <TextBlock Text="Скорость вывода текста" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
+                    <Slider Minimum="10" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True"
+                            Value="{Binding TextSpeed, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
+
+                    <TextBlock Text="Пауза при авточтении" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
+                    <Slider Minimum="0.5" Maximum="5.0" TickFrequency="0.5" IsSnapToTickEnabled="True"
+                            Value="{Binding AutoReadSpeed, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
+
+                    <TextBlock Text="Размер шрифта" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
+                    <Slider Minimum="16" Maximum="48" TickFrequency="2" IsSnapToTickEnabled="True"
+                            Value="{Binding TextSize, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
+
+                    <CheckBox Content="Пропускать непрочитанный текст" IsChecked="{Binding SkipUnseen}" 
+                              Foreground="Black" FontSize="18" FontWeight="SemiBold" Margin="0,5,0,10"/>
+
+                    <CheckBox Content="Подсвечивать прочитанный текст" IsChecked="{Binding HighlightReadText}" 
+                              Foreground="Black" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,20"/>
+
+                    <TextBlock Text="ЭКРАН" Foreground="#444444" FontSize="24" FontWeight="Bold" Margin="0,20,0,10"/>
+
+                    <CheckBox Content="Полноэкранный режим" IsChecked="{Binding IsFullscreen}" 
+                              Foreground="Black" FontSize="18" FontWeight="SemiBold" Margin="0,5,0,20"/>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <Button Grid.Row="2" Content="НАЗАД" Command="{Binding CloseCommand}" 
+                    Width="200" Height="50" Margin="0,20,0,0" HorizontalAlignment="Center"
+                    Style="{StaticResource MenuButtonStyle}"/>
+        </Grid>
+    </Border>
 </UserControl>

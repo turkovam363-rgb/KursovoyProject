@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
 using Курсовой_проект.Commands;
+using Курсовой_проект.Services;
 
 namespace Курсовой_проект.ViewModels
 {

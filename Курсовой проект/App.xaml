@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:Курсовой_проект"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>

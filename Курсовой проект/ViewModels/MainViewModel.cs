@@ -22,7 +22,7 @@ namespace Курсовой_проект.ViewModels
 
         public MainViewModel()
         {
-            CurrentView = new MenuViewModel(this);
+            CurrentView = new DisclaimerViewModel(this);
         }
     }
 }

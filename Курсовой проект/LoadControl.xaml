@@ -7,11 +7,12 @@
              MinHeight="720" MinWidth="1280"
              MaxHeight="1080" MaxWidth="1920"
              d:DesignHeight="720" d:DesignWidth="1280">
+    <UserControl.Background>
+        <ImageBrush ImageSource="/изображения и спрайты/фон сохранения и загрузки.jpg" Stretch="UniformToFill"/>
+    </UserControl.Background>
     <Grid>
-        <Grid Background="Black"/>
-
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="500">
-            <TextBlock Text="Выбор слота сохранения" FontSize="28" FontWeight="Bold" Foreground="#FFB6C1" HorizontalAlignment="Center" Margin="0,0,0,30">
+            <TextBlock Text="Выбор слота " FontSize="28" FontWeight="Bold" Foreground="#FFB6C1" HorizontalAlignment="Center" Margin="0,0,0,30">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="5" Color="White" ShadowDepth="1"/>
                 </TextBlock.Effect>
