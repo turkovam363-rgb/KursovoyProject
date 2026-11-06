@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Services="clr-namespace:Курсовой_проект.Services"
              mc:Ignorable="d" 
              MinHeight="720" MinWidth="1280"
              MaxHeight="1080" MaxWidth="1920"
@@ -51,9 +52,57 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="50,0,50,8">
+                <Button Content="Пропуск" Width="90" Height="30" Margin="0,0,10,0"
+Command="{Binding SkipCommand}"
+Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#FFF0F5"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="8" BorderBrush="#FFB6C1" BorderThickness="1">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFE4E1"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="История" Width="90" Height="30" Margin="0,0,10,0"
+Command="{Binding HistoryCommand}"
+Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#FFF0F5"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="8" BorderBrush="#FFB6C1" BorderThickness="1">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFE4E1"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
                 <Button Content="Сохранить" Width="90" Height="30" Margin="0,0,10,0"
-            Command="{Binding SaveCommand}"
-            Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+Command="{Binding SaveCommand}"
+Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="#FFF0F5"/>
@@ -76,8 +125,8 @@
                 </Button>
 
                 <Button Content="Загрузить" Width="90" Height="30" Margin="0,0,10,0"
-            Command="{Binding OpenLoadMenuCommand}"
-            Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+Command="{Binding OpenLoadMenuCommand}"
+Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="#FFF0F5"/>
@@ -100,8 +149,8 @@
                 </Button>
 
                 <Button Content="Настройки" Width="90" Height="30" Margin="0,0,10,0"
-            Command="{Binding OpenSettingsCommand}"
-            Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+Command="{Binding OpenSettingsCommand}"
+Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="#FFF0F5"/>
@@ -124,8 +173,8 @@
                 </Button>
 
                 <Button Content="Меню" Width="90" Height="30"
-            Command="{Binding ReturnToMenuCommand}"
-            Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+Command="{Binding ReturnToMenuCommand}"
+Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="#FFF0F5"/>
@@ -147,7 +196,6 @@
                     </Button.Style>
                 </Button>
             </StackPanel>
-
             <Border Grid.Row="2" 
                     Height="160" 
                     Margin="50,0,50,40" 
@@ -166,17 +214,18 @@
                     <DropShadowEffect BlurRadius="15" Color="#FFC0CB" Opacity="0.6" ShadowDepth="3"/>
                 </Border.Effect>
 
-                <Grid Margin="30,20,30,20">
+                <Grid Margin="30,15,30,15">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="{Binding CharacterName}" 
                                FontSize="22" 
                                FontWeight="Bold" 
                                Foreground="#D81B60" 
-                               Margin="0,0,0,8">
+                               Margin="0,0,0,4">
                         <TextBlock.Effect>
                             <DropShadowEffect BlurRadius="2" Color="White" ShadowDepth="1"/>
                         </TextBlock.Effect>
@@ -184,12 +233,27 @@
 
                     <TextBlock Grid.Row="1" 
                                Text="{Binding DialogueText}" 
-                               FontSize="18" 
-                               Foreground="#333333" 
+                               FontSize="{Binding Source={x:Static Services:SettingsService.Current}, Path=TextSize}" 
                                TextWrapping="Wrap" 
-                               LineHeight="26"/>
+                               LineHeight="26">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#333333"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Source={x:Static Services:SettingsService.Current}, Path=HighlightReadText}" Value="True"/>
+                                            <Condition Binding="{Binding IsCurrentLineAlreadyRead}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Foreground" Value="#FF888888"/>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </Grid>
             </Border>
+
         </Grid>
     </Grid>
 </UserControl>

@@ -61,42 +61,39 @@
 
                     <TextBlock Text="Общая громкость" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
                     <Slider Minimum="0" Maximum="1" TickFrequency="0.1" IsSnapToTickEnabled="True"
-                            Value="{Binding Volume, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
+                            Value="{Binding Volume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
 
                     <TextBlock Text="Громкость эффектов" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
                     <Slider Minimum="0" Maximum="1" TickFrequency="0.1" IsSnapToTickEnabled="True"
-                            Value="{Binding EffectsVolume, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
+                            Value="{Binding EffectsVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
 
                     <TextBlock Text="Громкость интерфейса" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
                     <Slider Minimum="0" Maximum="1" TickFrequency="0.1" IsSnapToTickEnabled="True"
-                            Value="{Binding UiVolume, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
+                            Value="{Binding UiVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
 
-                    <CheckBox Content="Отключить фоновую музыку" IsChecked="{Binding IsMusicMuted}" 
+                    <CheckBox Content="Отключить фоновую музыку" IsChecked="{Binding IsMusicMuted, Mode=TwoWay}" 
                               Foreground="Black" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,20"/>
 
                     <TextBlock Text="ТЕКСТ И ЧТЕНИЕ" Foreground="#444444" FontSize="24" FontWeight="Bold" Margin="0,20,0,10"/>
 
                     <TextBlock Text="Скорость вывода текста" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
                     <Slider Minimum="10" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True"
-                            Value="{Binding TextSpeed, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
+                            Value="{Binding TextSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
 
                     <TextBlock Text="Пауза при авточтении" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
                     <Slider Minimum="0.5" Maximum="5.0" TickFrequency="0.5" IsSnapToTickEnabled="True"
-                            Value="{Binding AutoReadSpeed, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
+                            Value="{Binding AutoReadSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
 
                     <TextBlock Text="Размер шрифта" Foreground="Black" FontSize="18" FontWeight="SemiBold"/>
-                    <Slider Minimum="16" Maximum="48" TickFrequency="2" IsSnapToTickEnabled="True"
-                            Value="{Binding TextSize, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
+                    <Slider Minimum="16" Maximum="28" TickFrequency="2" IsSnapToTickEnabled="True"
+                            Value="{Binding TextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,15"/>
 
-                    <CheckBox Content="Пропускать непрочитанный текст" IsChecked="{Binding SkipUnseen}" 
-                              Foreground="Black" FontSize="18" FontWeight="SemiBold" Margin="0,5,0,10"/>
-
-                    <CheckBox Content="Подсвечивать прочитанный текст" IsChecked="{Binding HighlightReadText}" 
+                    <CheckBox Content="Подсвечивать прочитанный текст" IsChecked="{Binding HighlightReadText, Mode=TwoWay}" 
                               Foreground="Black" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,20"/>
 
                     <TextBlock Text="ЭКРАН" Foreground="#444444" FontSize="24" FontWeight="Bold" Margin="0,20,0,10"/>
 
-                    <CheckBox Content="Полноэкранный режим" IsChecked="{Binding IsFullscreen}" 
+                    <CheckBox Content="Полноэкранный режим" IsChecked="{Binding IsFullscreen, Mode=TwoWay}" 
                               Foreground="Black" FontSize="18" FontWeight="SemiBold" Margin="0,5,0,20"/>
 
                 </StackPanel>
