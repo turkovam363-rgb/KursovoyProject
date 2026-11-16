@@ -17,7 +17,8 @@ namespace Курсовой_проект.ViewModels
         public ICommand SettingsCommand { get; }
         public ICommand ExitCommand { get; }
         public ICommand StartGameCommand { get; }
-        public ICommand LoadGameCommand { get; } 
+        public ICommand LoadGameCommand { get; }
+        public ICommand GalleryCommand { get; }
 
         public MenuViewModel(MainViewModel mainViewModel)
         {
@@ -25,7 +26,8 @@ namespace Курсовой_проект.ViewModels
             SettingsCommand = new RelayCommand(ExecuteSettings);
             ExitCommand = new RelayCommand(ExecuteExit);
             StartGameCommand = new RelayCommand(ExecuteStartGame);
-            LoadGameCommand = new RelayCommand(ExecuteLoadGame); 
+            LoadGameCommand = new RelayCommand(ExecuteLoadGame);
+            GalleryCommand = new RelayCommand(ExecuteGallery);
 
             AudioService.PlayBackgroundMusic("bg_music.mp3");
         }
@@ -58,6 +60,12 @@ namespace Курсовой_проект.ViewModels
                 AudioService.StopBackgroundMusic();
                 Application.Current.Shutdown();
             }
+        }
+
+        private void ExecuteGallery(object parameter)
+        {
+            System.Windows.MessageBox.Show("Галерея CG-артов находится в разработке!", "Sweet Candies",
+                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
         }
     }
 }

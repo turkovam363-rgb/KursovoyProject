@@ -10,6 +10,7 @@ namespace Курсовой_проект.ViewModels
     {
         private readonly MainViewModel _mainViewModel;
         private readonly ViewModelBase? _previousView;
+
         public double Volume
         {
             get => SettingsService.Current.Volume;
@@ -20,7 +21,7 @@ namespace Курсовой_проект.ViewModels
                     SettingsService.Current.Volume = value;
                     OnPropertyChanged();
                     SettingsService.Save();
-                    AudioService.SetVolume(value);
+                    AudioService.MusicVolume = value;
                 }
             }
         }
@@ -35,6 +36,7 @@ namespace Курсовой_проект.ViewModels
                     SettingsService.Current.EffectsVolume = value;
                     OnPropertyChanged();
                     SettingsService.Save();
+                    AudioService.EffectsVolume = value;
                 }
             }
         }
@@ -49,6 +51,7 @@ namespace Курсовой_проект.ViewModels
                     SettingsService.Current.UiVolume = value;
                     OnPropertyChanged();
                     SettingsService.Save();
+                    AudioService.EffectsVolume = value;
                 }
             }
         }
@@ -63,6 +66,8 @@ namespace Курсовой_проект.ViewModels
                     SettingsService.Current.IsMusicMuted = value;
                     OnPropertyChanged();
                     SettingsService.Save();
+
+                    AudioService.SetMuted(value);
                 }
             }
         }
@@ -159,8 +164,6 @@ namespace Курсовой_проект.ViewModels
             _mainViewModel = mainViewModel;
             _previousView = previousView ?? new MenuViewModel(_mainViewModel);
             CloseCommand = new RelayCommand(CloseWindow);
-
-            ToggleFullscreen(SettingsService.Current.IsFullscreen);
         }
 
         private void ToggleFullscreen(bool isFull)

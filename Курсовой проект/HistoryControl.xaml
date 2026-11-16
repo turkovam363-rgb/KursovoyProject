@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Курсовой_проект"
+             xmlns:Services="clr-namespace:Курсовой_проект.Services"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -41,13 +42,15 @@
                 <TextBlock Text="ИСТОРИЯ ДИАЛОГОВ" Foreground="#D81B60" FontSize="32" FontWeight="Bold" 
                            HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ScrollViewer x:Name="HistoryScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding DialogueHistory}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="10,5,10,15">
                                     <TextBlock Text="{Binding Speaker}" Foreground="#D81B60" FontSize="18" FontWeight="Bold" Margin="0,0,0,4"/>
-                                    <TextBlock Text="{Binding Message}" Foreground="#333333" FontSize="16" TextWrapping="Wrap" LineHeight="22"/>
+                                    <TextBlock Text="{Binding Message}" 
+                                               FontSize="{Binding Source={x:Static Services:SettingsService.Current}, Path=TextSize}" 
+                                               Foreground="#333333" TextWrapping="Wrap" LineHeight="22"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

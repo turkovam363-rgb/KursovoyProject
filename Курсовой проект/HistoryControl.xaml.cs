@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Курсовой_проект
 {
@@ -7,6 +9,15 @@ namespace Курсовой_проект
         public HistoryControl()
         {
             InitializeComponent();
+            Loaded += HistoryControl_Loaded;
+        }
+
+        private void HistoryControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                HistoryScroll.ScrollToEnd();
+            }), System.Windows.Threading.DispatcherPriority.Loaded);
         }
     }
 }

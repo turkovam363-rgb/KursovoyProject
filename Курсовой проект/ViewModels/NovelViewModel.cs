@@ -30,14 +30,14 @@ namespace Курсовой_проект.ViewModels
         private readonly Services.SaveService _saveService = new Services.SaveService();
 
         private System.Windows.Threading.DispatcherTimer _textTimer;
-        private System.Windows.Threading.DispatcherTimer _autoReadTimer;
-        private System.Windows.Threading.DispatcherTimer _skipModeTimer;
+        private System.Windows.Threading.DispatcherTimer _autoReadDelayTimer;
+        private const double AutoReadDelaySeconds = 2.0;
+
         private string _fullTargetText = string.Empty;
         private int _currentLeftCharIndex = 0;
         private bool _isAutoReadActive;
         private bool _isCurrentLineAlreadyRead;
-        private bool _isSkipModeActive;
-        private readonly HashSet<int> _readLinesHistory = new HashSet<int>();
+        private bool _isTextFinished;
 
         private string _characterName;
         public string CharacterName
@@ -78,11 +78,7 @@ namespace Курсовой_проект.ViewModels
                     OnPropertyChanged();
                     if (!value)
                     {
-                        _autoReadTimer?.Stop();
-                    }
-                    else if (_textTimer != null && !_textTimer.IsEnabled && DialogueText == _fullTargetText)
-                    {
-                        StartAutoReadTimer();
+                        _autoReadDelayTimer?.Stop();
                     }
                 }
             }
@@ -94,6 +90,12 @@ namespace Курсовой_проект.ViewModels
             set { _isCurrentLineAlreadyRead = value; OnPropertyChanged(); }
         }
 
+        public bool IsTextFinished
+        {
+            get => _isTextFinished;
+            set { _isTextFinished = value; OnPropertyChanged(); }
+        }
+
         public ICommand NextDialogueCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand OpenLoadMenuCommand { get; }
@@ -101,7 +103,7 @@ namespace Курсовой_проект.ViewModels
         public ICommand ReturnToMenuCommand { get; }
         public ICommand SkipCommand { get; }
         public ICommand HistoryCommand { get; }
-
+        public ICommand ToggleAutoReadCommand { get; }
 
         public NovelViewModel(MainViewModel mainViewModel)
         {
@@ -113,6 +115,7 @@ namespace Курсовой_проект.ViewModels
             ReturnToMenuCommand = new RelayCommand(ExecuteReturnToMenu);
             SkipCommand = new RelayCommand(ExecuteSkip);
             HistoryCommand = new RelayCommand(ExecuteHistory);
+            ToggleAutoReadCommand = new RelayCommand(ExecuteToggleAutoRead);
 
             AudioService.StopBackgroundMusic();
 
@@ -131,6 +134,7 @@ namespace Курсовой_проект.ViewModels
             ReturnToMenuCommand = new RelayCommand(ExecuteReturnToMenu);
             SkipCommand = new RelayCommand(ExecuteSkip);
             HistoryCommand = new RelayCommand(ExecuteHistory);
+            ToggleAutoReadCommand = new RelayCommand(ExecuteToggleAutoRead);
 
             AudioService.StopBackgroundMusic();
 
@@ -140,18 +144,14 @@ namespace Курсовой_проект.ViewModels
             ShowCurrentStep();
         }
 
-
         private void InitializeNovelTimers()
         {
             _textTimer = new System.Windows.Threading.DispatcherTimer();
             _textTimer.Tick += TextTimer_Tick;
 
-            _autoReadTimer = new System.Windows.Threading.DispatcherTimer();
-            _autoReadTimer.Tick += AutoReadTimer_Tick;
-
-            _skipModeTimer = new System.Windows.Threading.DispatcherTimer();
-            _skipModeTimer.Interval = TimeSpan.FromMilliseconds(50);
-            _skipModeTimer.Tick += SkipModeTimer_Tick;
+            _autoReadDelayTimer = new System.Windows.Threading.DispatcherTimer();
+            _autoReadDelayTimer.Interval = TimeSpan.FromSeconds(AutoReadDelaySeconds);
+            _autoReadDelayTimer.Tick += AutoReadDelayTimer_Tick;
         }
 
         private void InitStory()
@@ -165,18 +165,19 @@ namespace Курсовой_проект.ViewModels
             if (_storyContent != null && _currentStepIndex < _storyContent.Count)
             {
                 _textTimer?.Stop();
-                _autoReadTimer?.Stop();
+                _autoReadDelayTimer?.Stop();
 
                 var step = _storyContent[_currentStepIndex];
                 CharacterName = step.CharacterName;
                 CurrentBackground = step.BackgroundPath;
                 CurrentSprite = step.SpritePath;
 
-                IsCurrentLineAlreadyRead = _readLinesHistory.Contains(step.Id);
+                IsCurrentLineAlreadyRead = ReadHistoryService.IsRead(step.Id);
+                IsTextFinished = false;
 
                 if (!string.IsNullOrEmpty(step.MusicPath) && step.MusicPath != _lastPlayedMusic)
                 {
-                    AudioService.StopBackgroundMusic();
+                    AudioService.SetCurrentSceneMusic(step.MusicPath);
                     AudioService.PlayBackgroundMusic(step.MusicPath);
                     _lastPlayedMusic = step.MusicPath;
                 }
@@ -185,9 +186,10 @@ namespace Курсовой_проект.ViewModels
                 _currentLeftCharIndex = 0;
                 DialogueText = string.Empty;
 
-                if (_isSkipModeActive || Services.SettingsService.Current.TextSpeed >= 100)
+                if (Services.SettingsService.Current.TextSpeed >= 100)
                 {
                     DialogueText = _fullTargetText;
+                    IsTextFinished = true;
                     OnTextDisplayFinished();
                 }
                 else
@@ -214,6 +216,7 @@ namespace Курсовой_проект.ViewModels
             else
             {
                 _textTimer.Stop();
+                IsTextFinished = true;
                 OnTextDisplayFinished();
             }
         }
@@ -223,82 +226,81 @@ namespace Курсовой_проект.ViewModels
             if (_storyContent != null && _currentStepIndex < _storyContent.Count)
             {
                 var step = _storyContent[_currentStepIndex];
-                _readLinesHistory.Add(step.Id);
+                ReadHistoryService.MarkAsRead(step.Id);
                 IsCurrentLineAlreadyRead = true;
 
-                if (!_dialogueHistoryLog.Any(h => h.Message == _fullTargetText))
+                if (!_dialogueHistoryLog.Any(h => h.StepId == step.Id))
                 {
                     _dialogueHistoryLog.Add(new HistoryItem
                     {
+                        StepId = step.Id,
                         Speaker = string.IsNullOrEmpty(CharacterName) ? "Автор" : CharacterName,
                         Message = _fullTargetText
                     });
                 }
             }
 
-            if (_isSkipModeActive)
+            if (IsAutoReadActive)
             {
-                _skipModeTimer.Start();
-            }
-            else if (IsAutoReadActive)
-            {
-                StartAutoReadTimer();
+                StartAutoReadDelay();
             }
         }
 
-        private void StartAutoReadTimer()
+        private void StartAutoReadDelay()
         {
-            _autoReadTimer.Stop();
-            _autoReadTimer.Interval = TimeSpan.FromSeconds(Services.SettingsService.Current.AutoReadSpeed);
-            _autoReadTimer.Start();
+            _autoReadDelayTimer.Stop();
+            _autoReadDelayTimer.Interval = TimeSpan.FromSeconds(AutoReadDelaySeconds);
+            _autoReadDelayTimer.Start();
         }
 
-        private void AutoReadTimer_Tick(object sender, EventArgs e)
+        private void AutoReadDelayTimer_Tick(object sender, EventArgs e)
         {
-            _autoReadTimer.Stop();
-            _currentStepIndex++;
-            ShowCurrentStep();
-        }
+            _autoReadDelayTimer.Stop();
 
-        private void SkipModeTimer_Tick(object sender, EventArgs e)
-        {
-            _skipModeTimer.Stop();
-
-            if (_storyContent != null && _currentStepIndex + 1 < _storyContent.Count)
+            if (IsAutoReadActive)
             {
-                int nextStepId = _storyContent[_currentStepIndex + 1].Id;
-                bool nextLineAlreadyRead = _readLinesHistory.Contains(nextStepId);
-
-                if (Services.SettingsService.Current.SkipUnseen == false && !nextLineAlreadyRead)
-                {
-                    _isSkipModeActive = false;
-                    return;
-                }
-
                 _currentStepIndex++;
                 ShowCurrentStep();
             }
+        }
+
+        private void ExecuteToggleAutoRead(object parameter)
+        {
+            IsAutoReadActive = !IsAutoReadActive;
+
+            if (IsAutoReadActive)
+            {
+                if (!IsTextFinished && _textTimer != null && _textTimer.IsEnabled)
+                {
+                    _textTimer.Stop();
+                    DialogueText = _fullTargetText;
+                    IsTextFinished = true;
+                    OnTextDisplayFinished();
+                }
+                else if (IsTextFinished)
+                {
+                    StartAutoReadDelay();
+                }
+            }
             else
             {
-                _isSkipModeActive = false;
-                StopAllTimers();
-                _mainViewModel.CurrentView = new MenuViewModel(_mainViewModel);
+                _autoReadDelayTimer?.Stop();
             }
         }
 
         private void ExecuteNextDialogue(object parameter)
         {
-            if (_isSkipModeActive)
+            if (IsAutoReadActive)
             {
-                _isSkipModeActive = false;
-                _skipModeTimer.Stop();
-                return;
+                IsAutoReadActive = false;
+                _autoReadDelayTimer?.Stop();
             }
 
             if (_textTimer != null && _textTimer.IsEnabled)
             {
                 _textTimer.Stop();
                 DialogueText = _fullTargetText;
+                IsTextFinished = true;
                 OnTextDisplayFinished();
                 return;
             }
@@ -309,26 +311,11 @@ namespace Курсовой_проект.ViewModels
 
         private void ExecuteSkip(object parameter)
         {
-            if (_isSkipModeActive)
-            {
-                _isSkipModeActive = false;
-                _skipModeTimer.Stop();
-                return;
-            }
-
             IsAutoReadActive = false;
-            _isSkipModeActive = true;
+            _autoReadDelayTimer?.Stop();
 
-            if (_textTimer != null && _textTimer.IsEnabled)
-            {
-                _textTimer.Stop();
-                DialogueText = _fullTargetText;
-                OnTextDisplayFinished();
-            }
-            else
-            {
-                _skipModeTimer.Start();
-            }
+            _currentStepIndex++;
+            ShowCurrentStep();
         }
 
         private void ExecuteHistory(object parameter)
@@ -337,12 +324,11 @@ namespace Курсовой_проект.ViewModels
             _mainViewModel.CurrentView = new HistoryViewModel(_mainViewModel, this, _dialogueHistoryLog);
         }
 
-
         private void StopAllTimers()
         {
             _textTimer?.Stop();
-            _autoReadTimer?.Stop();
-            _skipModeTimer?.Stop();
+            _autoReadDelayTimer?.Stop();
+            IsAutoReadActive = false;
         }
 
         private void ExecuteSave(object parameter)
@@ -375,6 +361,7 @@ namespace Курсовой_проект.ViewModels
 
             if (dialog.ShowDialog() == true)
             {
+                SaveReadHistory();
                 _mainViewModel.CurrentView = new MenuViewModel(_mainViewModel);
             }
             else
@@ -382,6 +369,10 @@ namespace Курсовой_проект.ViewModels
                 ShowCurrentStep();
             }
         }
+
+        public void SaveReadHistory()
+        {
+            ReadHistoryService.Save();
+        }
     }
 }
-

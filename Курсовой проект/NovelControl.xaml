@@ -12,6 +12,12 @@
     <Grid Background="Black">
         <Grid.InputBindings>
             <MouseBinding MouseAction="LeftClick" Command="{Binding NextDialogueCommand}" />
+            <KeyBinding Key="Space" Command="{Binding NextDialogueCommand}" />
+            <KeyBinding Key="Return" Command="{Binding NextDialogueCommand}" />
+            <KeyBinding Key="H" Command="{Binding HistoryCommand}" />
+            <KeyBinding Key="S" Command="{Binding SaveCommand}" />
+            <KeyBinding Key="L" Command="{Binding OpenLoadMenuCommand}" />
+            <KeyBinding Key="Escape" Command="{Binding ReturnToMenuCommand}" />
         </Grid.InputBindings>
 
         <Image Stretch="UniformToFill" 
@@ -52,9 +58,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="50,0,50,8">
-                <Button Content="Пропуск" Width="90" Height="30" Margin="0,0,10,0"
-Command="{Binding SkipCommand}"
-Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+                <Button Content="Пропуск" Width="90" Height="30" Margin="0,0,10,0" Command="{Binding SkipCommand}" Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="#FFF0F5"/>
@@ -76,9 +80,7 @@ Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     </Button.Style>
                 </Button>
 
-                <Button Content="История" Width="90" Height="30" Margin="0,0,10,0"
-Command="{Binding HistoryCommand}"
-Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+                <Button Content="Авточтение" Width="110" Height="30" Margin="0,0,10,0" Command="{Binding ToggleAutoReadCommand}" Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="#FFF0F5"/>
@@ -100,9 +102,7 @@ Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     </Button.Style>
                 </Button>
 
-                <Button Content="Сохранить" Width="90" Height="30" Margin="0,0,10,0"
-Command="{Binding SaveCommand}"
-Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+                <Button Content="История" Width="90" Height="30" Margin="0,0,10,0" Command="{Binding HistoryCommand}" Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="#FFF0F5"/>
@@ -124,9 +124,7 @@ Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     </Button.Style>
                 </Button>
 
-                <Button Content="Загрузить" Width="90" Height="30" Margin="0,0,10,0"
-Command="{Binding OpenLoadMenuCommand}"
-Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+                <Button Content="Сохранить" Width="90" Height="30" Margin="0,0,10,0" Command="{Binding SaveCommand}" Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="#FFF0F5"/>
@@ -148,9 +146,7 @@ Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     </Button.Style>
                 </Button>
 
-                <Button Content="Настройки" Width="90" Height="30" Margin="0,0,10,0"
-Command="{Binding OpenSettingsCommand}"
-Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+                <Button Content="Загрузить" Width="90" Height="30" Margin="0,0,10,0" Command="{Binding OpenLoadMenuCommand}" Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="#FFF0F5"/>
@@ -172,9 +168,29 @@ Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     </Button.Style>
                 </Button>
 
-                <Button Content="Меню" Width="90" Height="30"
-Command="{Binding ReturnToMenuCommand}"
-Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+                <Button Content="Настройки" Width="90" Height="30" Margin="0,0,10,0" Command="{Binding OpenSettingsCommand}" Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#FFF0F5"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="8" BorderBrush="#FFB6C1" BorderThickness="1">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFE4E1"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="Меню" Width="90" Height="30" Command="{Binding ReturnToMenuCommand}" Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="#FFF0F5"/>
@@ -196,20 +212,19 @@ Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     </Button.Style>
                 </Button>
             </StackPanel>
+
             <Border Grid.Row="2" 
                     Height="160" 
                     Margin="50,0,50,40" 
                     CornerRadius="15" 
                     BorderBrush="#FFB6C1" 
                     BorderThickness="2">
-
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="#FFF0F5" Offset="0.0"/>
                         <GradientStop Color="#FFE4E1" Offset="1.0"/>
                     </LinearGradientBrush>
                 </Border.Background>
-
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="15" Color="#FFC0CB" Opacity="0.6" ShadowDepth="3"/>
                 </Border.Effect>
@@ -218,7 +233,6 @@ Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="{Binding CharacterName}" 
@@ -231,29 +245,56 @@ Foreground="#D81B60" FontWeight="Bold" Cursor="Hand">
                         </TextBlock.Effect>
                     </TextBlock>
 
-                    <TextBlock Grid.Row="1" 
-                               Text="{Binding DialogueText}" 
-                               FontSize="{Binding Source={x:Static Services:SettingsService.Current}, Path=TextSize}" 
-                               TextWrapping="Wrap" 
-                               LineHeight="26">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="#333333"/>
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Source={x:Static Services:SettingsService.Current}, Path=HighlightReadText}" Value="True"/>
-                                            <Condition Binding="{Binding IsCurrentLineAlreadyRead}" Value="True"/>
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Foreground" Value="#FF888888"/>
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <Grid Grid.Row="1">
+                        <TextBlock Text="{Binding DialogueText}" 
+                                   FontSize="{Binding Source={x:Static Services:SettingsService.Current}, Path=TextSize}" 
+                                   TextWrapping="Wrap" 
+                                   LineHeight="26">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#333333"/>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Source={x:Static Services:SettingsService.Current}, Path=HighlightReadText}" Value="True"/>
+                                                <Condition Binding="{Binding IsCurrentLineAlreadyRead}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Foreground" Value="#FF888888"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <TextBlock Text="▼" 
+                                   Foreground="#D81B60" 
+                                   FontSize="20" 
+                                   HorizontalAlignment="Right" 
+                                   VerticalAlignment="Bottom" 
+                                   Margin="0,0,0,5">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsTextFinished}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                            <TextBlock.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever">
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.2" Duration="0:0:0.6" AutoReverse="True"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </TextBlock.Triggers>
+                        </TextBlock>
+                    </Grid>
                 </Grid>
             </Border>
-
         </Grid>
     </Grid>
 </UserControl>

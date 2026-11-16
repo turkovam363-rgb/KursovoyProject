@@ -6,6 +6,7 @@ namespace Курсовой_проект.ViewModels
 {
     public class HistoryItem
     {
+        public int StepId { get; set; }
         public string Speaker { get; set; }
         public string Message { get; set; }
     }
@@ -24,7 +25,6 @@ namespace Курсовой_проект.ViewModels
             _mainViewModel = mainViewModel;
             _previousView = previousView;
             DialogueHistory = history;
-
             CloseCommand = new RelayCommand(CloseHistory);
         }
 
