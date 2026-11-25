@@ -20,7 +20,7 @@ namespace Курсовой_проект.ViewModels
             ProceedCommand = new RelayCommand(ExecuteProceed);
         }
 
-        private void ExecuteProceed(object parameter)
+        private void ExecuteProceed(object? parameter)
         {
             _mainViewModel.CurrentView = new MenuViewModel(_mainViewModel);
         }

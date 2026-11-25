@@ -1,5 +1,5 @@
-﻿using System.Windows;
-
+﻿using System;
+using System.Windows;
 
 namespace Курсовой_проект
 {
@@ -9,16 +9,27 @@ namespace Курсовой_проект
         {
             InitializeComponent();
         }
+
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
-            this.Close();
+            CloseWithResult(true);
         }
 
         private void NoButton_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = false;
-            this.Close();
+            CloseWithResult(false);
+        }
+
+        private void CloseWithResult(bool result)
+        {
+            try
+            {
+                DialogResult = result;
+            }
+            catch (InvalidOperationException)
+            {
+                Close();
+            }
         }
     }
 }

@@ -24,6 +24,9 @@
         <DataTemplate DataType="{x:Type vm:LoadMenuViewModel}">
             <local:LoadControl />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:HistoryViewModel}">
+            <local:HistoryControl />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>

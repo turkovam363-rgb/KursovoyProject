@@ -1,16 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
 using Курсовой_проект.Commands;
+using Курсовой_проект.Models;
 
 namespace Курсовой_проект.ViewModels
 {
-    public class HistoryItem
-    {
-        public int StepId { get; set; }
-        public string Speaker { get; set; }
-        public string Message { get; set; }
-    }
-
     public class HistoryViewModel : ViewModelBase
     {
         private readonly MainViewModel _mainViewModel;
@@ -28,7 +22,7 @@ namespace Курсовой_проект.ViewModels
             CloseCommand = new RelayCommand(CloseHistory);
         }
 
-        private void CloseHistory(object parameter)
+        private void CloseHistory(object? parameter)
         {
             _mainViewModel.CurrentView = _previousView;
         }

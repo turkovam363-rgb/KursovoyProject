@@ -9,14 +9,13 @@ namespace Курсовой_проект.ViewModels
         private readonly ViewModelBase _previousView;
         private readonly bool _isSaveMode;
         private readonly int _currentStepIndex;
-        private readonly Services.SaveService _saveService = new Services.SaveService();
 
-        public string Slot1Text => _saveService.GetSaveDate(1);
-        public string Slot2Text => _saveService.GetSaveDate(2);
-        public string Slot3Text => _saveService.GetSaveDate(3);
-        public string Slot4Text => _saveService.GetSaveDate(4);
-        public string Slot5Text => _saveService.GetSaveDate(5);
-        public string Slot6Text => _saveService.GetSaveDate(6);
+        public string Slot1Text => _mainViewModel.SaveService.GetSaveDate(1);
+        public string Slot2Text => _mainViewModel.SaveService.GetSaveDate(2);
+        public string Slot3Text => _mainViewModel.SaveService.GetSaveDate(3);
+        public string Slot4Text => _mainViewModel.SaveService.GetSaveDate(4);
+        public string Slot5Text => _mainViewModel.SaveService.GetSaveDate(5);
+        public string Slot6Text => _mainViewModel.SaveService.GetSaveDate(6);
 
         public string TitleText => _isSaveMode ? "Выберите слот для сохранения" : "Выбор слота сохранения";
 
@@ -42,36 +41,48 @@ namespace Курсовой_проект.ViewModels
             BackCommand = new RelayCommand(ExecuteBack);
         }
 
-        private void ExecuteSelectSlot(object parameter)
+        private void ExecuteSelectSlot(object? parameter)
         {
-            if (parameter is string slotStr && int.TryParse(slotStr, out int slotId))
+            if (parameter is not string slotStr || !int.TryParse(slotStr, out int slotId))
             {
-                if (_isSaveMode)
+                return;
+            }
+
+            if (_isSaveMode)
+            {
+                bool saved = _mainViewModel.SaveService.SaveGame(slotId, _currentStepIndex);
+                if (saved)
                 {
-                    _saveService.SaveGame(slotId, _currentStepIndex);
-
-                    var msg = new CustomMessageBox("Сохранение", $"Игра успешно сохранена в слот {slotId}!");
-                    msg.ShowDialog();
-
+                    _mainViewModel.DialogService.ShowMessage("Сохранение", $"Игра успешно сохранена в слот {slotId}!");
                     _mainViewModel.CurrentView = _previousView;
                 }
                 else
                 {
-                    int savedStep = _saveService.LoadGame(slotId);
-                    if (savedStep != -1)
+                    _mainViewModel.DialogService.ShowMessage("Ошибка", "Не удалось сохранить игру.");
+                }
+            }
+            else
+            {
+                int savedStep = _mainViewModel.SaveService.LoadGame(slotId);
+                if (savedStep != -1)
+                {
+                    var novelVm = new NovelViewModel(_mainViewModel, savedStep);
+                    if (!novelVm.IsStoryLoaded)
                     {
-                        _mainViewModel.CurrentView = new NovelViewModel(_mainViewModel, savedStep);
+                        _mainViewModel.DialogService.ShowMessage("Ошибка", "Не удалось загрузить сценарий из базы данных.");
+                        return;
                     }
-                    else
-                    {
-                        var msg = new CustomMessageBox("Загрузка", "Этот слот пуст!");
-                        msg.ShowDialog();
-                    }
+
+                    _mainViewModel.CurrentView = novelVm;
+                }
+                else
+                {
+                    _mainViewModel.DialogService.ShowMessage("Загрузка", "Этот слот пуст!");
                 }
             }
         }
 
-        private void ExecuteBack(object parameter)
+        private void ExecuteBack(object? parameter)
         {
             _mainViewModel.CurrentView = _previousView;
         }

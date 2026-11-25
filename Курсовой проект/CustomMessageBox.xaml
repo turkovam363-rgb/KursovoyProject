@@ -16,20 +16,42 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
-            <Border Background="#FF69B4" CornerRadius="11,11,0,0">
-                <TextBlock x:Name="TitleText" Text="Заголовок" Foreground="White" FontSize="18" 
-                           FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Border Background="#FF69B4" 
+                    CornerRadius="11,11,0,0">
+                <TextBlock x:Name="TitleText" 
+                           Text="Заголовок" 
+                           Foreground="White"
+                           FontSize="18" 
+                           FontWeight="Bold" 
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
             </Border>
 
-            <TextBlock x:Name="MessageText" Text="Текст сообщения" Grid.Row="1" 
-                       TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" 
-                       HorizontalAlignment="Center" FontSize="16" Foreground="#FF1493" Margin="20,10,20,10"/>
+            <TextBlock x:Name="MessageText"
+                       Text="Текст сообщения" 
+                       Grid.Row="1" 
+                       TextWrapping="Wrap" 
+                       TextAlignment="Center" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center"
+                       FontSize="16" Foreground="#FF1493" 
+                       Margin="20,10,20,10"/>
 
-            <Button Content="ОК" Grid.Row="2" Width="120" Height="40" Margin="0,0,0,10"
-                    Foreground="White" FontSize="18" FontWeight="Bold" Cursor="Hand" Click="OkButton_Click">
+            <Button Content="ОК"
+                    Grid.Row="2"
+                    Width="120" 
+                    Height="40" 
+                    Margin="0,0,0,10"
+                    Foreground="White" 
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Cursor="Hand" 
+                    Click="OkButton_Click">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="BtnBorder" Background="#FF69B4" CornerRadius="20">
+                        <Border x:Name="BtnBorder" 
+                                Background="#FF69B4" 
+                                CornerRadius="20">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>

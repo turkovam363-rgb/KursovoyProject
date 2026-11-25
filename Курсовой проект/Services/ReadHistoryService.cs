@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 
@@ -7,26 +8,25 @@ namespace Курсовой_проект.Services
 {
     public static class ReadHistoryService
     {
-        private static readonly string _filePath = "read_history.json";
+        private static readonly string _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "read_history.json");
         private static HashSet<int> _readSteps = new HashSet<int>();
 
         public static void Load()
         {
-            if (File.Exists(_filePath))
+            if (!File.Exists(_filePath)) return;
+
+            try
             {
-                try
+                string json = File.ReadAllText(_filePath);
+                var list = JsonSerializer.Deserialize<List<int>>(json);
+                if (list != null)
                 {
-                    string json = File.ReadAllText(_filePath);
-                    var list = JsonSerializer.Deserialize<List<int>>(json);
-                    if (list != null)
-                    {
-                        _readSteps = new HashSet<int>(list);
-                    }
+                    _readSteps = new HashSet<int>(list);
                 }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Ошибка загрузки истории: {ex.Message}");
-                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Ошибка загрузки истории: {ex.Message}");
             }
         }
 
@@ -40,7 +40,7 @@ namespace Курсовой_проект.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Ошибка сохранения истории: {ex.Message}");
+                Debug.WriteLine($"Ошибка сохранения истории: {ex.Message}");
             }
         }
 
@@ -49,9 +49,12 @@ namespace Курсовой_проект.Services
             return _readSteps.Contains(stepId);
         }
 
-        public static void MarkAsRead(int stepId)
+        public static void MarkAsRead(int stepId, bool saveImmediately = true)
         {
-            _readSteps.Add(stepId);
+            if (_readSteps.Add(stepId) && saveImmediately)
+            {
+                Save();
+            }
         }
 
         public static void Clear()

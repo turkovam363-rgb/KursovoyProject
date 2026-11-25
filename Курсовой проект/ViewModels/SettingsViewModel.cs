@@ -9,7 +9,7 @@ namespace Курсовой_проект.ViewModels
     public class SettingsViewModel : ViewModelBase
     {
         private readonly MainViewModel _mainViewModel;
-        private readonly ViewModelBase? _previousView;
+        private readonly ViewModelBase _previousView;
 
         public double Volume
         {
@@ -51,7 +51,7 @@ namespace Курсовой_проект.ViewModels
                     SettingsService.Current.UiVolume = value;
                     OnPropertyChanged();
                     SettingsService.Save();
-                    AudioService.EffectsVolume = value;
+                    AudioService.UiVolume = value;
                 }
             }
         }
@@ -66,7 +66,6 @@ namespace Курсовой_проект.ViewModels
                     SettingsService.Current.IsMusicMuted = value;
                     OnPropertyChanged();
                     SettingsService.Save();
-
                     AudioService.SetMuted(value);
                 }
             }
@@ -152,7 +151,7 @@ namespace Курсовой_проект.ViewModels
                     SettingsService.Current.IsFullscreen = value;
                     OnPropertyChanged();
                     SettingsService.Save();
-                    ToggleFullscreen(value);
+                    _mainViewModel.WindowService.SetFullscreen(value);
                 }
             }
         }
@@ -166,26 +165,7 @@ namespace Курсовой_проект.ViewModels
             CloseCommand = new RelayCommand(CloseWindow);
         }
 
-        private void ToggleFullscreen(bool isFull)
-        {
-            Window mainWin = Application.Current.MainWindow;
-            if (mainWin == null) return;
-
-            if (isFull)
-            {
-                mainWin.WindowStyle = WindowStyle.None;
-                mainWin.WindowState = WindowState.Maximized;
-            }
-            else
-            {
-                mainWin.WindowStyle = WindowStyle.SingleBorderWindow;
-                mainWin.WindowState = WindowState.Normal;
-                mainWin.Width = 1280;
-                mainWin.Height = 720;
-            }
-        }
-
-        private void CloseWindow(object parameter)
+        private void CloseWindow(object? parameter)
         {
             _mainViewModel.CurrentView = _previousView;
         }

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Курсовой_проект"
              xmlns:Services="clr-namespace:Курсовой_проект.Services"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="720" d:DesignWidth="1280">
     <UserControl.Resources>
         <Style x:Key="MenuButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF69B4"/>
@@ -17,7 +17,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="25" BorderThickness="0">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="25" 
+                                BorderThickness="0">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -31,7 +33,10 @@
         </Style>
     </UserControl.Resources>
     <Grid Background="#88D87093">
-        <Border Padding="40" Background="#FFF0F5" CornerRadius="15" Margin="100,50">
+        <Border Padding="40" 
+                Background="#FFF0F5" 
+                CornerRadius="15" 
+                Margin="100,50">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -50,15 +55,19 @@
                                     <TextBlock Text="{Binding Speaker}" Foreground="#D81B60" FontSize="18" FontWeight="Bold" Margin="0,0,0,4"/>
                                     <TextBlock Text="{Binding Message}" 
                                                FontSize="{Binding Source={x:Static Services:SettingsService.Current}, Path=TextSize}" 
-                                               Foreground="#333333" TextWrapping="Wrap" LineHeight="22"/>
+                                               Foreground="#333333" TextWrapping="Wrap"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
 
-                <Button Grid.Row="2" Content="НАЗАД" Command="{Binding CloseCommand}" 
-                        Width="200" Height="50" Margin="0,20,0,0" HorizontalAlignment="Center"
+                <Button Grid.Row="2" 
+                        Content="НАЗАД" 
+                        Command="{Binding CloseCommand}" 
+                        Width="200" Height="50"
+                        Margin="0,20,0,0" 
+                        HorizontalAlignment="Center"
                         Style="{StaticResource MenuButtonStyle}"/>
             </Grid>
         </Border>

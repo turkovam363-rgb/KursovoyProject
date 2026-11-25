@@ -1,13 +1,16 @@
-﻿using System;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
+using System;
+using System.IO;
+using System.Diagnostics;
 
 namespace Курсовой_проект.Services
 {
-    public class SaveService
+    public class SaveService : ISaveService
     {
         private string GetConnectionString()
         {
-            return "Data Source=novel.db";
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "novel.db");
+            return $"Data Source={dbPath}";
         }
 
         private void EnsureTableCreated(SqliteConnection connection)
@@ -22,7 +25,7 @@ namespace Курсовой_проект.Services
             command.ExecuteNonQuery();
         }
 
-        public void SaveGame(int slotId, int stepIndex)
+        public bool SaveGame(int slotId, int stepIndex)
         {
             try
             {
@@ -41,10 +44,13 @@ namespace Курсовой_проект.Services
                     command.Parameters.AddWithValue("@saveDate", DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
                     command.ExecuteNonQuery();
                 }
+
+                return true;
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show($"Ошибка сохранения: {ex.Message}");
+                Debug.WriteLine($"Ошибка сохранения: {ex.Message}");
+                return false;
             }
         }
 
@@ -68,10 +74,11 @@ namespace Курсовой_проект.Services
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
+                Debug.WriteLine($"Ошибка загрузки слота {slotId}: {ex.Message}");
             }
+
             return -1;
         }
 
@@ -91,13 +98,13 @@ namespace Курсовой_проект.Services
                     var result = command.ExecuteScalar();
                     if (result != null)
                     {
-                        return $"Слот {slotId}: {result.ToString()}";
+                        return $"Слот {slotId}: {result}";
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
+                Debug.WriteLine($"Ошибка чтения даты слота {slotId}: {ex.Message}");
             }
 
             return $"Слот {slotId}: Пусто";

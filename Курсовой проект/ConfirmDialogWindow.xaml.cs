@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace Курсовой_проект
 {
@@ -7,19 +8,29 @@ namespace Курсовой_проект
         public ConfirmDialogWindow(string message)
         {
             InitializeComponent();
-            MessageText.Text = message;
+            MessageText.Text = message ?? string.Empty;
         }
 
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
-            Close();
+            CloseWithResult(true);
         }
 
         private void NoButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
-            Close();
+            CloseWithResult(false);
+        }
+
+        private void CloseWithResult(bool result)
+        {
+            try
+            {
+                DialogResult = result;
+            }
+            catch (InvalidOperationException)
+            {
+                Close();
+            }
         }
     }
 }

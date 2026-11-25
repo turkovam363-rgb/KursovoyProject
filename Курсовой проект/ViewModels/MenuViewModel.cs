@@ -32,40 +32,43 @@ namespace Курсовой_проект.ViewModels
             AudioService.PlayBackgroundMusic("bg_music.mp3");
         }
 
-        private void ExecuteStartGame(object parameter)
+        private void ExecuteStartGame(object? parameter)
         {
-            _mainViewModel.CurrentView = new NovelViewModel(_mainViewModel);
+            var novelVm = new NovelViewModel(_mainViewModel);
+            if (!novelVm.IsStoryLoaded)
+            {
+                _mainViewModel.DialogService.ShowMessage("Ошибка", "Не удалось загрузить сценарий из базы данных.");
+                AudioService.PlayBackgroundMusic("bg_music.mp3");
+                return;
+            }
+
+            _mainViewModel.CurrentView = novelVm;
         }
 
-        private void ExecuteLoadGame(object parameter)
+        private void ExecuteLoadGame(object? parameter)
         {
             _mainViewModel.CurrentView = new LoadMenuViewModel(_mainViewModel, this);
         }
 
-        private void ExecuteSettings(object parameter)
+        private void ExecuteSettings(object? parameter)
         {
             _mainViewModel.CurrentView = new SettingsViewModel(_mainViewModel, this);
         }
 
-        private void ExecuteExit(object parameter)
+        private void ExecuteExit(object? parameter)
         {
-            ExitWindow dialog = new ExitWindow();
-            if (Application.Current.MainWindow != null)
+            if (_mainViewModel.DialogService.ShowExitDialog())
             {
-                dialog.Owner = Application.Current.MainWindow;
-            }
-
-            if (dialog.ShowDialog() == true)
-            {
+                ReadHistoryService.Save();
+                SettingsService.Save();
                 AudioService.StopBackgroundMusic();
-                Application.Current.Shutdown();
+                _mainViewModel.WindowService.Shutdown();
             }
         }
 
-        private void ExecuteGallery(object parameter)
+        private void ExecuteGallery(object? parameter)
         {
-            System.Windows.MessageBox.Show("Галерея CG-артов находится в разработке!", "Sweet Candies",
-                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+            _mainViewModel.DialogService.ShowMessage("Sweet Candies", "Галерея CG-артов находится в разработке!");
         }
     }
 }

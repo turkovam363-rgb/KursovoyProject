@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace Курсовой_проект
 {
@@ -16,8 +17,8 @@ namespace Курсовой_проект
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                HistoryScroll.ScrollToEnd();
-            }), System.Windows.Threading.DispatcherPriority.Loaded);
+                HistoryScroll?.ScrollToEnd();
+            }), DispatcherPriority.Loaded);
         }
     }
 }
