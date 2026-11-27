@@ -14,5 +14,7 @@ namespace Курсовой_проект.Models
         public string BackgroundPath { get; set; } = string.Empty;
         public string MusicPath { get; set; } = string.Empty;
         public string SpritePath { get; set; } = string.Empty;
+        public string PortraitPath { get; set; } = string.Empty;
+        public bool IsChapterTitle { get; set; }
     }
 }

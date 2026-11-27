@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Media;
+using Курсовой_проект.Models;
 using Курсовой_проект.Models.Курсовой_проект.Models;
 
 namespace Курсовой_проект.Services
@@ -14,10 +16,12 @@ namespace Курсовой_проект.Services
         private static double _effectsVolume = 1.0;
         private static double _uiVolume = 1.0;
         private static string _currentSceneMusicPath = string.Empty;
+        private static string _pendingMusicFullPath = string.Empty;
         private static bool _isMuted = false;
 
         static AudioService()
         {
+            _bgmPlayer.MediaOpened += OnBgmMediaOpened;
             _bgmPlayer.MediaEnded += OnBgmMediaEnded;
             _bgmPlayer.MediaFailed += OnBgmMediaFailed;
         }
@@ -47,7 +51,7 @@ namespace Курсовой_проект.Services
         public static void ApplySettings(GameSettings settings)
         {
             if (settings == null) return;
-            _musicVolume = Math.Clamp(settings.Volume, 0.0, 1.0);
+            _musicVolume = settings.Volume <= 0.0 ? 0.5 : Math.Clamp(settings.Volume, 0.0, 1.0);
             _effectsVolume = Math.Clamp(settings.EffectsVolume, 0.0, 1.0);
             _uiVolume = Math.Clamp(settings.UiVolume, 0.0, 1.0);
             _isMuted = settings.IsMusicMuted;
@@ -76,8 +80,10 @@ namespace Курсовой_проект.Services
                     return;
                 }
 
+                _pendingMusicFullPath = fullPath;
+                _bgmPlayer.Stop();
                 _bgmPlayer.Open(new Uri(fullPath, UriKind.Absolute));
-                _bgmPlayer.Volume = _musicVolume;
+                _bgmPlayer.Volume = _musicVolume > 0 ? _musicVolume : 0.5;
                 _bgmPlayer.Play();
             }
             catch (Exception ex)
@@ -91,8 +97,7 @@ namespace Курсовой_проект.Services
             try
             {
                 _bgmPlayer.Stop();
-                _bgmPlayer.Close();
-                _currentSceneMusicPath = string.Empty;
+                _pendingMusicFullPath = string.Empty;
             }
             catch (Exception ex)
             {
@@ -172,6 +177,20 @@ namespace Курсовой_проект.Services
             }
         }
 
+        private static void OnBgmMediaOpened(object? sender, EventArgs e)
+        {
+            if (_isMuted) return;
+            try
+            {
+                _bgmPlayer.Volume = _musicVolume > 0 ? _musicVolume : 0.5;
+                _bgmPlayer.Play();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Ошибка старта музыки: {ex.Message}");
+            }
+        }
+
         private static void OnBgmMediaEnded(object? sender, EventArgs e)
         {
             if (_isMuted) return;
@@ -188,7 +207,7 @@ namespace Курсовой_проект.Services
 
         private static void OnBgmMediaFailed(object? sender, ExceptionEventArgs e)
         {
-            Debug.WriteLine($"Ошибка декодирования музыки: {e.ErrorException?.Message}");
+            Debug.WriteLine($"Ошибка декодирования музыки ({_pendingMusicFullPath}): {e.ErrorException?.Message}");
         }
     }
 }

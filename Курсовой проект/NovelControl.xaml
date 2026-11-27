@@ -25,24 +25,32 @@
 
         <Image Stretch="UniformToFill" 
                HorizontalAlignment="Center" 
-               VerticalAlignment="Center">
+               VerticalAlignment="Center"
+               RenderOptions.BitmapScalingMode="HighQuality">
             <Image.Style>
                 <Style TargetType="Image">
                     <Setter Property="Source" Value="{Binding CurrentBackground}" />
                     <Setter Property="Opacity" Value="1.0" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentBackground}" Value="">
+                            <Setter Property="Source" Value="{x:Null}" />
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
             </Image.Style>
         </Image>
 
         <Image Stretch="Uniform"
                VerticalAlignment="Bottom"
-               HorizontalAlignment="Center">
+               HorizontalAlignment="Center"
+               RenderOptions.BitmapScalingMode="HighQuality">
             <Image.Style>
                 <Style TargetType="Image">
                     <Setter Property="Source" Value="{Binding CurrentSprite}"/>
                     <Setter Property="Opacity" Value="1.0"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding CurrentSprite}" Value="">
+                            <Setter Property="Source" Value="{x:Null}" />
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding CurrentSprite}" Value="{x:Null}">
@@ -227,7 +235,7 @@
             </StackPanel>
 
             <Border Grid.Row="2" 
-                    Height="160" 
+                    Height="170" 
                     Margin="50,0,50,40" 
                     CornerRadius="15" 
                     BorderBrush="#FFB6C1" 
@@ -242,71 +250,153 @@
                     <DropShadowEffect BlurRadius="15" Color="#FFC0CB" Opacity="0.6" ShadowDepth="3"/>
                 </Border.Effect>
 
-                <Grid Margin="30,15,30,15">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <Grid Margin="20,12,25,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="{Binding CharacterName}" 
-                               FontSize="22" 
-                               FontWeight="Bold" 
-                               Foreground="#D81B60" 
-                               Margin="0,0,0,4">
-                        <TextBlock.Effect>
-                            <DropShadowEffect BlurRadius="2" Color="White" ShadowDepth="1"/>
-                        </TextBlock.Effect>
-                    </TextBlock>
-
-                    <Grid Grid.Row="1">
-                        <TextBlock Text="{Binding DialogueText}" 
-                                   FontSize="{Binding Source={x:Static Services:SettingsService.Current}, Path=TextSize}" 
-                                   TextWrapping="Wrap">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#333333"/>
+                    <Border Grid.Column="0"
+                            Width="135"
+                            Height="146"
+                            Margin="0,0,20,0"
+                            CornerRadius="12"
+                            Background="#FFEBF5"
+                            BorderBrush="#FF99C2"
+                            BorderThickness="1.5"
+                            ClipToBounds="True">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentPortrait}" Value="">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding CurrentPortrait}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Image Source="{Binding CurrentPortrait}"
+                               Stretch="UniformToFill"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top"
+                               RenderOptions.BitmapScalingMode="HighQuality">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="{Binding CurrentPortrait}"/>
                                     <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding Source={x:Static Services:SettingsService.Current}, Path=HighlightReadText}" Value="True"/>
-                                                <Condition Binding="{Binding IsCurrentLineAlreadyRead}" Value="True"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Foreground" Value="#FF888888"/>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                        <TextBlock Text="▼" 
-                                   Foreground="#D81B60" 
-                                   FontSize="20" 
-                                   HorizontalAlignment="Right" 
-                                   VerticalAlignment="Bottom" 
-                                   Margin="0,0,0,5">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsTextFinished}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
+                                        <DataTrigger Binding="{Binding CurrentPortrait}" Value="">
+                                            <Setter Property="Source" Value="{x:Null}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </TextBlock.Style>
-                            <TextBlock.Triggers>
-                                <EventTrigger RoutedEvent="Loaded">
-                                    <BeginStoryboard>
-                                        <Storyboard RepeatBehavior="Forever">
-                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.2" Duration="0:0:0.6" AutoReverse="True"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-                            </TextBlock.Triggers>
+                            </Image.Style>
+                        </Image>
+                    </Border>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="{Binding CharacterName}" 
+                                   FontSize="22" 
+                                   FontWeight="Bold" 
+                                   Foreground="#D81B60" 
+                                   Margin="0,0,0,4">
+                            <TextBlock.Effect>
+                                <DropShadowEffect BlurRadius="2" Color="White" ShadowDepth="1"/>
+                            </TextBlock.Effect>
                         </TextBlock>
+
+                        <Grid Grid.Row="1">
+                            <TextBlock Text="{Binding DialogueText}" 
+                                       FontSize="{Binding Source={x:Static Services:SettingsService.Current}, Path=TextSize}" 
+                                       TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#333333"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Source={x:Static Services:SettingsService.Current}, Path=HighlightReadText}" Value="True"/>
+                                                    <Condition Binding="{Binding IsCurrentLineAlreadyRead}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Foreground" Value="#FF888888"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <TextBlock Text="▼" 
+                                       Foreground="#D81B60" 
+                                       FontSize="20" 
+                                       HorizontalAlignment="Right" 
+                                       VerticalAlignment="Bottom" 
+                                       Margin="0,0,0,5">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsTextFinished}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                <TextBlock.Triggers>
+                                    <EventTrigger RoutedEvent="Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard RepeatBehavior="Forever">
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.2" Duration="0:0:0.6" AutoReverse="True"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </TextBlock.Triggers>
+                            </TextBlock>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Border>
+        </Grid>
+
+        <Grid Panel.ZIndex="10">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChapterTitle}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Grid Background="#FF050505"/>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="АКТ 1"
+                           FontSize="28"
+                           FontFamily="Georgia"
+                           Foreground="#FFFFB6C1"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,6">
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="#FFFF1493" BlurRadius="14" ShadowDepth="0" Opacity="0.85"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+                <TextBlock Text="Формовка"
+                           FontSize="72"
+                           FontFamily="Gabriola"
+                           Foreground="#FFFF69B4"
+                           HorizontalAlignment="Center">
+                    <TextBlock.Effect>
+                        <DropShadowEffect Color="#FFFF1493" BlurRadius="26" ShadowDepth="0" Opacity="0.95"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

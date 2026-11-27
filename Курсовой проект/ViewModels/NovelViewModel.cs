@@ -28,11 +28,13 @@ namespace Курсовой_проект.ViewModels
         private bool _isSkipActive;
         private bool _isCurrentLineAlreadyRead;
         private bool _isTextFinished;
+        private bool _isChapterTitle;
 
         private string _characterName = string.Empty;
         private string _dialogueText = string.Empty;
         private string _currentBackground = string.Empty;
         private string _currentSprite = string.Empty;
+        private string _currentPortrait = string.Empty;
 
         public bool IsStoryLoaded => _storyContent.Count > 0;
 
@@ -58,6 +60,12 @@ namespace Курсовой_проект.ViewModels
         {
             get => _currentSprite;
             set { _currentSprite = value; OnPropertyChanged(); }
+        }
+
+        public string CurrentPortrait
+        {
+            get => _currentPortrait;
+            set { _currentPortrait = value; OnPropertyChanged(); }
         }
 
         public bool IsAutoReadActive
@@ -105,6 +113,12 @@ namespace Курсовой_проект.ViewModels
         {
             get => _isTextFinished;
             set { _isTextFinished = value; OnPropertyChanged(); }
+        }
+
+        public bool IsChapterTitle
+        {
+            get => _isChapterTitle;
+            set { _isChapterTitle = value; OnPropertyChanged(); }
         }
 
         public ICommand NextDialogueCommand { get; }
@@ -170,6 +184,8 @@ namespace Курсовой_проект.ViewModels
                 CharacterName = step.CharacterName;
                 CurrentBackground = step.BackgroundPath;
                 CurrentSprite = step.SpritePath;
+                CurrentPortrait = step.PortraitPath;
+                IsChapterTitle = step.IsChapterTitle;
 
                 _wasCurrentStepAlreadyRead = ReadHistoryService.IsRead(step.Id);
                 IsCurrentLineAlreadyRead = _wasCurrentStepAlreadyRead;
@@ -215,6 +231,8 @@ namespace Курсовой_проект.ViewModels
             CharacterName = step.CharacterName;
             CurrentBackground = step.BackgroundPath;
             CurrentSprite = step.SpritePath;
+            CurrentPortrait = step.PortraitPath;
+            IsChapterTitle = step.IsChapterTitle;
 
             _wasCurrentStepAlreadyRead = ReadHistoryService.IsRead(step.Id);
             IsCurrentLineAlreadyRead = _wasCurrentStepAlreadyRead;

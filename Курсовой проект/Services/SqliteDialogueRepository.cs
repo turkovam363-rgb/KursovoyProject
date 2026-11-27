@@ -1,10 +1,9 @@
-﻿using Microsoft.Data.Sqlite;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.Data.Sqlite;
 using Курсовой_проект.Models;
-using Курсовой_проект.ViewModels;
 
 namespace Курсовой_проект.Services
 {
@@ -39,14 +38,18 @@ namespace Курсовой_проект.Services
                         int idCounter = 1;
                         while (reader.Read())
                         {
+                            string text = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+                            bool isChapter = text.StartsWith("АКТ 1", StringComparison.OrdinalIgnoreCase);
+
                             story.Add(new DialogueStep
                             {
                                 Id = idCounter++,
                                 CharacterName = reader.IsDBNull(0) ? string.Empty : reader.GetString(0),
-                                Text = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                                Text = text,
                                 BackgroundPath = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
                                 MusicPath = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
-                                SpritePath = reader.IsDBNull(4) ? string.Empty : reader.GetString(4)
+                                SpritePath = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
+                                IsChapterTitle = isChapter
                             });
                         }
                     }
